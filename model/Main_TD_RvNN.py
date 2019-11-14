@@ -27,7 +27,7 @@ from evaluate import *
 #from Util import *
 
 obj = "Twitter15" # choose dataset, you can choose either "Twitter15" or "Twitter16"
-fold = "2" # fold index, choose from 0-4
+fold = "0" # fold index, choose from 0-4
 tag = "_u2b"
 vocabulary_size = 5000
 hidden_dim = 100
@@ -39,11 +39,11 @@ unit="TD_RvNN-"+obj+str(fold)+'-vol.'+str(vocabulary_size)+tag
 #lossPath = "../loss/loss-"+unit+".txt"
 #modelPath = "../param/param-"+unit+".npz" 
 
-treePath = '../resource/data.TD_RvNN.vol_'+str(vocabulary_size)+'.txt' 
+treePath = '../resource/data.TD_RvNN.vol_mod2'+str(vocabulary_size)+'.txt'
 
-trainPath = "../nfold/RNNtrainSet_"+obj+str(fold)+"_tree.txt" 
+trainPath = "../nfold/RNNtrainSet_"+obj+str(fold)+"_tree_mod.txt"
 testPath = "../nfold/RNNtestSet_"+obj+str(fold)+"_tree.txt"
-labelPath = "../resource/"+obj+"_label_All.txt"
+labelPath = "../resource/"+obj+"_label_All_mod.txt"
 
 #floss = open(lossPath, 'a+')
 
@@ -62,8 +62,11 @@ def str2matrix(Str, MaxL): # str = index:wordfreq index:wordfreq
     #print Str.split(' ')
     return wordFreq, wordIndex 
 
+
+
 def loadLabel(label, l1, l2, l3, l4):
     labelset_nonR, labelset_f, labelset_t, labelset_u = ['news', 'non-rumor'], ['false'], ['true'], ['unverified']
+    global y_train
     if label in labelset_nonR:
        y_train = [1,0,0,0]
        l1 += 1
