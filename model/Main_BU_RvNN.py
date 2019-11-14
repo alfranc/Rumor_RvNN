@@ -26,8 +26,8 @@ import random
 from evaluate import *
 #from Util import *
 
-obj = "Twitter15" # choose dataset, you can choose either "Twitter15" or "Twitter16"
-fold = "3" # fold index, choose from 0-4
+obj = "Twitter16" # choose dataset, you can choose either "Twitter15" or "Twitter16"
+fold = "0" # fold index, choose from 0-4
 tag = ""
 vocabulary_size = 5000
 hidden_dim = 100
@@ -42,8 +42,8 @@ unit="BU_RvNN-"+obj+str(fold)+'-vol.'+str(vocabulary_size)+tag
 treePath = '../resource/data.BU_RvNN.vol_'+str(vocabulary_size)+tag+'.txt' 
 
 trainPath = "../nfold/RNNtrainSet_"+obj+str(fold)+"_tree.txt" 
-testPath = "../nfold/RNNtestSet_"+obj+str(fold)+"_tree.txt"
-labelPath = "../resource/"+obj+"_label_All.txt"
+testPath = "../nfold/RNNtestSet_Twitter150_tree.txt"
+labelPath = "../resource/Twitter1516_label_All.txt"
 
 #floss = open(lossPath, 'a+')
 
@@ -64,6 +64,7 @@ def str2matrix(Str, MaxL): # str = index:wordfreq index:wordfreq
 
 def loadLabel(label, l1, l2, l3, l4):
     labelset_nonR, labelset_f, labelset_t, labelset_u = ['news', 'non-rumor'], ['false'], ['true'], ['unverified']
+    global y_train
     if label in labelset_nonR:
        y_train = [1,0,0,0]
        l1 += 1
@@ -83,7 +84,7 @@ def constructTree(tree):
     ## 1. ini tree node
     index2node = {}
     for i in tree:
-        node = tree_gru.Node_tweet(idx=i)
+        node = BU_RvNN.Node_tweet(idx=i)
         index2node[i] = node
     ## 2. construct tree
     for j in tree:
@@ -104,7 +105,7 @@ def constructTree(tree):
            root = nodeC
     ## 3. convert tree to DNN input    
     degree = tree[j]['max_degree']   
-    x_word, x_index, tree = tree_gru.gen_nn_inputs(root, max_degree=degree, only_leaves_have_vals=False)    
+    x_word, x_index, tree = BU_RvNN.gen_nn_inputs(root, max_degree=degree, only_leaves_have_vals=False)
     return x_word, x_index, tree       
                
 ################################# loas data ###################################
